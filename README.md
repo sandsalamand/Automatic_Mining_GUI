@@ -1,1 +1,3 @@
-Win Forms C# App that alllows you to set scheduled times for starting and stopping a specified mining script with arguments
+<h1>Automatic Mining GUI</h1>
+
+Windows Forms C# App that allows you to set scheduled times for starting and stopping a mining script
