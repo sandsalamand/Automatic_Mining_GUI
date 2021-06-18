@@ -32,18 +32,13 @@
 			this.optionsTextBox = new System.Windows.Forms.TextBox();
 			this.runButton = new System.Windows.Forms.Button();
 			this.saveButton = new System.Windows.Forms.Button();
-			this.openTrackBar = new System.Windows.Forms.TrackBar();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.openValueDisplay = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.openAMPM = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.closeValueDisplay = new System.Windows.Forms.Label();
 			this.closeAMPM = new System.Windows.Forms.Label();
 			this.closeTrackBar = new System.Windows.Forms.TrackBar();
 			this.SaveCommand = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.openTrackBar)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.closeTrackBar)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -82,16 +77,6 @@
 			this.saveButton.UseVisualStyleBackColor = true;
 			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
 			// 
-			// openTrackBar
-			// 
-			this.openTrackBar.LargeChange = 1;
-			this.openTrackBar.Location = new System.Drawing.Point(62, 480);
-			this.openTrackBar.Maximum = 24;
-			this.openTrackBar.Name = "openTrackBar";
-			this.openTrackBar.Size = new System.Drawing.Size(508, 69);
-			this.openTrackBar.TabIndex = 4;
-			this.openTrackBar.Scroll += new System.EventHandler(this.openTrackBar_Scroll);
-			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
@@ -109,33 +94,6 @@
 			this.label2.Size = new System.Drawing.Size(199, 37);
 			this.label2.TabIndex = 6;
 			this.label2.Text = ".exe Arguments";
-			// 
-			// openValueDisplay
-			// 
-			this.openValueDisplay.AutoSize = true;
-			this.openValueDisplay.Location = new System.Drawing.Point(243, 397);
-			this.openValueDisplay.Name = "openValueDisplay";
-			this.openValueDisplay.Size = new System.Drawing.Size(32, 37);
-			this.openValueDisplay.TabIndex = 7;
-			this.openValueDisplay.Text = "0";
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(243, 329);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(147, 37);
-			this.label4.TabIndex = 8;
-			this.label4.Text = "Open Time";
-			// 
-			// openAMPM
-			// 
-			this.openAMPM.AutoSize = true;
-			this.openAMPM.Location = new System.Drawing.Point(333, 397);
-			this.openAMPM.Name = "openAMPM";
-			this.openAMPM.Size = new System.Drawing.Size(70, 37);
-			this.openAMPM.TabIndex = 9;
-			this.openAMPM.Text = "A.M.";
 			// 
 			// label3
 			// 
@@ -194,12 +152,8 @@
 			this.Controls.Add(this.closeAMPM);
 			this.Controls.Add(this.closeValueDisplay);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.openAMPM);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.openValueDisplay);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.openTrackBar);
 			this.Controls.Add(this.saveButton);
 			this.Controls.Add(this.runButton);
 			this.Controls.Add(this.optionsTextBox);
@@ -207,7 +161,6 @@
 			this.Name = "Form1";
 			this.Text = "Mining Automation";
 			this.Load += new System.EventHandler(this.Form1_Load);
-			((System.ComponentModel.ISupportInitialize)(this.openTrackBar)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.closeTrackBar)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -220,12 +173,8 @@
 		private System.Windows.Forms.TextBox optionsTextBox;
 		private System.Windows.Forms.Button runButton;
 		private System.Windows.Forms.Button saveButton;
-		private System.Windows.Forms.TrackBar openTrackBar;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label openValueDisplay;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label openAMPM;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label closeValueDisplay;
 		private System.Windows.Forms.Label closeAMPM;
