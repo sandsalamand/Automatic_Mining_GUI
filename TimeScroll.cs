@@ -8,21 +8,27 @@ using System.Drawing;
 
 namespace Mining_App_Core
 {
+	//This class contains a title label, a label to display the time,
+	//a label to show whether the time is AM or PM, and a scroll bar to change the time.
+	//The times referred to by the elements are synchronized through the Time property,
+	//which updates the necessary private variables when get{} is called on it
 	public class TimeScroll
 	{
 		private System.ComponentModel.IContainer components = null;
 
 		private System.Windows.Forms.Label title;
-		private System.Windows.Forms.Label displayAMPM;
 		private System.Windows.Forms.Label valueDisplay;
+		private System.Windows.Forms.Label displayAMPM;
 		private System.Windows.Forms.TrackBar trackBar;
 		private int trackTime = 0;
-		public int Time {
+		//this property synchronizes the trackbar value and the time display label, and has logic to update the AM/PM label based on time
+		public int Time
+		{
 			get { return trackTime; }
 			set
 			{
 				this.trackTime = value;
-				this.trackBar.Value = value;
+				this.trackBar.Value = value; //covers cases where Time is set from outside the trackbar
 				if (value > 12)
 				{
 					displayAMPM.Text = "PM";
@@ -41,11 +47,12 @@ namespace Mining_App_Core
 			}
 		}
 
+		//Constuctor: init 4 new UI elements and add them to the form
 		public TimeScroll (Point position, string title, Form form)
 		{
-			this.title = initLabel(new Point(position.X + 40, position.Y - 100), title, "titleLabel");
-			this.displayAMPM = initLabel(new Point(position.X + 80, position.Y - 60), "AM", "amPMLabel");
-			this.valueDisplay = initLabel(new Point(position.X + 40, position.Y - 60), "0", "valueLabel");
+			this.title = initLabel(new Point(position.X + 170, position.Y - 110), title, "titleLabel");
+			this.displayAMPM = initLabel(new Point(position.X + 230, position.Y - 60), "AM", "amPMLabel");
+			this.valueDisplay = initLabel(new Point(position.X + 190, position.Y - 60), "0", "valueLabel");
 			this.trackBar = initTrackBar(new Point(position.X, position.Y), 24, "trackBarName", new System.EventHandler(this.trackBar_Scroll), form);
 			form.Controls.Add(this.title);
 			form.Controls.Add(this.displayAMPM);
@@ -62,7 +69,7 @@ namespace Mining_App_Core
 			label.Size = new System.Drawing.Size(147, 37);
 			label.TabIndex = 8;
 			label.Text = text;
-			//prob need to add size as parameter
+			//might need to add size as parameter
 			return label;
 		}
 

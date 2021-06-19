@@ -34,12 +34,7 @@
 			this.saveButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.closeValueDisplay = new System.Windows.Forms.Label();
-			this.closeAMPM = new System.Windows.Forms.Label();
-			this.closeTrackBar = new System.Windows.Forms.TrackBar();
 			this.SaveCommand = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.closeTrackBar)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// exeTextBox
@@ -47,7 +42,7 @@
 			this.exeTextBox.Location = new System.Drawing.Point(45, 98);
 			this.exeTextBox.Multiline = true;
 			this.exeTextBox.Name = "exeTextBox";
-			this.exeTextBox.Size = new System.Drawing.Size(525, 103);
+			this.exeTextBox.Size = new System.Drawing.Size(525, 202);
 			this.exeTextBox.TabIndex = 0;
 			// 
 			// optionsTextBox
@@ -55,7 +50,7 @@
 			this.optionsTextBox.Location = new System.Drawing.Point(827, 98);
 			this.optionsTextBox.Multiline = true;
 			this.optionsTextBox.Name = "optionsTextBox";
-			this.optionsTextBox.Size = new System.Drawing.Size(529, 145);
+			this.optionsTextBox.Size = new System.Drawing.Size(529, 202);
 			this.optionsTextBox.TabIndex = 1;
 			// 
 			// runButton
@@ -66,6 +61,7 @@
 			this.runButton.TabIndex = 2;
 			this.runButton.Text = "Run";
 			this.runButton.UseVisualStyleBackColor = true;
+			this.runButton.Click += new System.EventHandler(this.runButton_Click);
 			// 
 			// saveButton
 			// 
@@ -75,62 +71,25 @@
 			this.saveButton.TabIndex = 3;
 			this.saveButton.Text = "Save Times";
 			this.saveButton.UseVisualStyleBackColor = true;
-			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+			this.saveButton.Click += new System.EventHandler(this.saveTime_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(216, 42);
+			this.label1.Location = new System.Drawing.Point(197, 42);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(213, 37);
+			this.label1.Size = new System.Drawing.Size(198, 37);
 			this.label1.TabIndex = 5;
-			this.label1.Text = "Mining .exe Path";
+			this.label1.Text = "Miner .exe Path";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(983, 42);
+			this.label2.Location = new System.Drawing.Point(1005, 42);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(199, 37);
 			this.label2.TabIndex = 6;
 			this.label2.Text = ".exe Arguments";
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(1019, 339);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(147, 37);
-			this.label3.TabIndex = 11;
-			this.label3.Text = "Close Time";
-			// 
-			// closeValueDisplay
-			// 
-			this.closeValueDisplay.AutoSize = true;
-			this.closeValueDisplay.Location = new System.Drawing.Point(1019, 397);
-			this.closeValueDisplay.Name = "closeValueDisplay";
-			this.closeValueDisplay.Size = new System.Drawing.Size(32, 37);
-			this.closeValueDisplay.TabIndex = 12;
-			this.closeValueDisplay.Text = "0";
-			// 
-			// closeAMPM
-			// 
-			this.closeAMPM.AutoSize = true;
-			this.closeAMPM.Location = new System.Drawing.Point(1114, 397);
-			this.closeAMPM.Name = "closeAMPM";
-			this.closeAMPM.Size = new System.Drawing.Size(68, 37);
-			this.closeAMPM.TabIndex = 13;
-			this.closeAMPM.Text = "P.M.";
-			// 
-			// closeTrackBar
-			// 
-			this.closeTrackBar.LargeChange = 1;
-			this.closeTrackBar.Location = new System.Drawing.Point(813, 475);
-			this.closeTrackBar.Maximum = 24;
-			this.closeTrackBar.Name = "closeTrackBar";
-			this.closeTrackBar.Size = new System.Drawing.Size(543, 69);
-			this.closeTrackBar.TabIndex = 14;
-			this.closeTrackBar.Scroll += new System.EventHandler(this.closeTrackBar_Scroll);
 			// 
 			// SaveCommand
 			// 
@@ -148,10 +107,6 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1417, 832);
 			this.Controls.Add(this.SaveCommand);
-			this.Controls.Add(this.closeTrackBar);
-			this.Controls.Add(this.closeAMPM);
-			this.Controls.Add(this.closeValueDisplay);
-			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.saveButton);
@@ -161,7 +116,6 @@
 			this.Name = "Form1";
 			this.Text = "Mining Automation";
 			this.Load += new System.EventHandler(this.Form1_Load);
-			((System.ComponentModel.ISupportInitialize)(this.closeTrackBar)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -175,10 +129,6 @@
 		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label closeValueDisplay;
-		private System.Windows.Forms.Label closeAMPM;
-		private System.Windows.Forms.TrackBar closeTrackBar;
 		private System.Windows.Forms.Button SaveCommand;
 	}
 }

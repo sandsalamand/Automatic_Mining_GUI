@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management.Automation;
+using System.Collections;
+using System.Timers;
+using System.Globalization;
 
 namespace Mining_App_Core
 {
@@ -16,28 +19,39 @@ namespace Mining_App_Core
 		static string topLevelDirectory = @"c:\Program Files";
 		static public string operatingDirectory = System.IO.Path.Combine(topLevelDirectory, "Automatic Mining");
 		static public string preferenceFilePath = System.IO.Path.Combine(operatingDirectory, "Preferences.txt");
-		private int openMin { get; set; } = 0;
 		private int closeMin { get; set; } = 0;
 		List<string> preferences;
 		Task result;
+		System.Diagnostics.Process miningProcess = null;
+		int processId = -1;
 		bool savedThisSession = false;
+		bool miningWindowOpen = false;
+		private static System.Timers.Timer aTimer;
+		TimeScroll openScroller;
+		TimeScroll closeScroller;
 
-		TimeScroll timeScroller;
+		enum RecommendedAction
+		{
+			Open,
+			Close,
+			None
+		}
+
 
 		public Form1()
 		{
 			InitializeComponent();
-			System.IO.Directory.CreateDirectory(operatingDirectory);
-
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			this.runButton.Click += new EventHandler(runButton_Click);
-			this.saveButton.Click += new EventHandler(saveButton_Click);
-			timeScroller = new TimeScroll(new Point(62, 480), "Open Time", this);
+			System.IO.Directory.CreateDirectory(operatingDirectory);
+			openScroller = new TimeScroll(new Point(62, 480), "Start Time", this);
+			closeScroller = new TimeScroll(new Point(813, 480), "End Time", this);
 			LoadSettings();
+			SetTimer();
 		}
+
 		void LoadSettings()
 		{
 			if (FileIO.PrefFileExists())
@@ -45,61 +59,42 @@ namespace Mining_App_Core
 				preferences = FileIO.ReadPreferences();
 				exeTextBox.Text = preferences[0];
 				optionsTextBox.Text = preferences[1];
-				//openTrackBar.Value = Convert.ToInt32(preferences[2]);
-				timeScroller.Time = Convert.ToInt32(preferences[2]);
-				closeTrackBar.Value = Convert.ToInt32(preferences[3]);
+				openScroller.Time = Convert.ToInt32(preferences[2]);
+				closeScroller.Time = Convert.ToInt32(preferences[3]);
 			}
 		}
+
 		private void runButton_Click(object sender, EventArgs e)
 		{
 			if (savedThisSession)
 			{
 				preferences = FileIO.ReadPreferences();
 			}
-			//exeTextBox.Text = preferences[1];
-			if (preferences != null && preferences.Count == 4)
+			AttemptRunMiningCommand(preferences);
+		}
+
+		private void AttemptRunMiningCommand(List<string> preferences)
+		{
+			if (preferences != null && preferences.Count == 4 && !miningWindowOpen)
 			{
-				RunMiningCommand(preferences);
+				miningProcess = System.Diagnostics.Process.Start(preferences[0], preferences[1]);
+				processId = miningProcess.Id;
+				miningWindowOpen = true;
 			}
-			else {
+			else
+			{
 				ErrorWindow("no valid exe and arguments found in" + preferenceFilePath);
 			}
 		}
 
-		private void RunMiningCommand(List<string> preferences)
-		{
-			int processId = System.Diagnostics.Process.Start(preferences[0], preferences[1]).Id; // for some reason this triggers lolminer's anti-hack
-		}
-
-		private void saveButton_Click(object sender, EventArgs e)
+		private void saveTime_Click(object sender, EventArgs e)
 		{
 			savedThisSession = true;
 			List<string> preferences = FileIO.ReadPreferences();
-			//preferences[2] = openMin.ToString();
-			preferences[2] = timeScroller.Time.ToString();
-			preferences[3] = closeMin.ToString();
+			preferences[2] = openScroller.Time.ToString();
+			preferences[3] = closeScroller.Time.ToString();
+			//preferences[3] = closeMin.ToString();
 			FileIO.WritePreferences(preferences);
-		}
-
-		private void closeTrackBar_Scroll(object sender, EventArgs e)
-		{
-			closeMin = closeTrackBar.Value;
-
-			if (closeMin > 12)
-			{
-				closeAMPM.Text = "P.M.";
-				closeValueDisplay.Text = (closeMin - 12).ToString();
-			}
-			else if (closeMin == 12)
-			{
-				closeAMPM.Text = "P.M.";
-				closeValueDisplay.Text = closeMin.ToString();
-			}
-			else
-			{
-				closeAMPM.Text = "A.M.";
-				closeValueDisplay.Text = closeMin.ToString();
-			}
 		}
 
 		private void SaveCommand_Click(object sender, EventArgs e)
@@ -110,12 +105,83 @@ namespace Mining_App_Core
 			FileIO.WritePreferences(preferences);
 		}
 
+		private void SetTimer()
+		{
+			// Create a timer with a two second interval.
+			aTimer = new System.Timers.Timer(2000);
+			// Hook up the Elapsed event for the timer. 
+			aTimer.Elapsed += OnTimedEvent;
+			aTimer.AutoReset = true;
+			aTimer.Enabled = true;
+		}
+
+		private void OnTimedEvent(Object source, ElapsedEventArgs e)
+		{
+			if (miningProcess != null)
+			{
+				processId = miningProcess.Id;
+				miningWindowOpen = !miningProcess.HasExited;
+			}
+			if (savedThisSession)
+			{
+				preferences = FileIO.ReadPreferences();
+			}
+			RecommendedAction action = CheckTime();
+			switch (action)
+			{
+				case RecommendedAction.Open:
+					AttemptRunMiningCommand(preferences);
+					break;
+				case RecommendedAction.Close:
+					AttemptStopMining();
+					break;
+				case RecommendedAction.None:
+					break;
+			}
+		}
+		
+		private RecommendedAction CheckTime()
+		{
+			string localDate = DateTime.Now.ToString(new CultureInfo("en-GB"));
+			string localTime = localDate.Split(' ')[1];
+			string[] time = localTime.Split(':');
+			int hour = Convert.ToInt32(time[0]);
+			int minute = Convert.ToInt32(time[1]);
+			if (hour >= closeScroller.Time)
+			{
+				return RecommendedAction.Close;
+			}
+			else if (hour >= openScroller.Time)
+			{
+				return RecommendedAction.Open;
+			}
+			else { 
+				return RecommendedAction.None;
+			}
+		}
+
+		private void AttemptStopMining()
+		{
+			if (miningProcess != null)
+			{
+				//miningProcess.Close();
+				miningProcess.Kill();
+			}
+		}
+
 		private void ErrorWindow(string errorMessage)
 		{
 			Rectangle errorWindow = new Rectangle();
 			errorWindow.X = ((int)this.StartPosition);
 
 			//unfinished
+		}
+
+		//called when form1 instance is destroyed
+		~Form1()
+		{
+			aTimer.Stop();
+			aTimer.Dispose();
 		}
 	}
 }
