@@ -9,6 +9,16 @@ namespace Mining_App_Core
 {
 	public class FileIO
 	{
+		public static bool PrefFileExists()
+		{
+			if (File.Exists(Form1.preferenceFilePath))
+			{
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 		public static async Task WritePreferences(List<string> lines)
 		{
 			await File.WriteAllLinesAsync(Form1.preferenceFilePath, lines);
