@@ -14,6 +14,7 @@ using System.Globalization;
 
 namespace Mining_App_Core
 {
+	//This class contains all the logic for the main form
 	public partial class Form1 : Form
 	{
 		static string topLevelDirectory = @"c:\Program Files";
@@ -38,6 +39,12 @@ namespace Mining_App_Core
 		}
 
 
+		//
+		//TODO: Add button to start timer instead of auto-start on form load, GUI Output for status of application (i.e. Mining Script Running), Error Handling
+		//
+
+
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -57,10 +64,13 @@ namespace Mining_App_Core
 			if (FileIO.PrefFileExists())
 			{
 				preferences = FileIO.ReadPreferences();
-				exeTextBox.Text = preferences[0];
-				optionsTextBox.Text = preferences[1];
-				openScroller.Time = Convert.ToInt32(preferences[2]);
-				closeScroller.Time = Convert.ToInt32(preferences[3]);
+				if (preferences != null)
+				{
+					exeTextBox.Text = preferences[0];
+					optionsTextBox.Text = preferences[1];
+					openScroller.Time = Convert.ToInt32(preferences[2]);
+					closeScroller.Time = Convert.ToInt32(preferences[3]);
+				}
 			}
 		}
 
@@ -91,18 +101,23 @@ namespace Mining_App_Core
 		{
 			savedThisSession = true;
 			List<string> preferences = FileIO.ReadPreferences();
-			preferences[2] = openScroller.Time.ToString();
-			preferences[3] = closeScroller.Time.ToString();
-			//preferences[3] = closeMin.ToString();
-			FileIO.WritePreferences(preferences);
+			if (preferences is not null)
+			{
+				preferences[2] = openScroller.Time.ToString();
+				preferences[3] = closeScroller.Time.ToString();
+				FileIO.WritePreferences(preferences);
+			}
 		}
 
 		private void SaveCommand_Click(object sender, EventArgs e)
 		{
 			List<string> preferences = FileIO.ReadPreferences();
-			preferences[0] = exeTextBox.Text;
-			preferences[1] = optionsTextBox.Text;
-			FileIO.WritePreferences(preferences);
+			if (preferences is not null)
+			{
+				preferences[0] = exeTextBox.Text;
+				preferences[1] = optionsTextBox.Text;
+				FileIO.WritePreferences(preferences);
+			}
 		}
 
 		private void SetTimer()
@@ -164,7 +179,6 @@ namespace Mining_App_Core
 		{
 			if (miningProcess != null)
 			{
-				//miningProcess.Close();
 				miningProcess.Kill();
 			}
 		}
