@@ -7,6 +7,7 @@ using System.IO;
 
 namespace Mining_App_Core
 {
+	//This class handles File I/O
 	public class FileIO
 	{
 		public static bool PrefFileExists()
@@ -34,23 +35,19 @@ namespace Mining_App_Core
 				preferences.Add(line);
 				while (line != null)
 				{
-					Console.WriteLine(line);
 					line = sr.ReadLine();
-					if(line is not null) { preferences.Add(line); }
+					if(line is not null) { 
+						preferences.Add(line);
+					}
 				}
-				//close the file
 				sr.Close();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				Console.WriteLine("Exception: " + e.Message);
-			}
-			finally
-			{
-				Console.WriteLine("Executing finally block.");
+				return null;
 			}
 			return preferences;
 		}
 	}
-	}
+}
 	

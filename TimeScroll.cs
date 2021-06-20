@@ -8,10 +8,8 @@ using System.Drawing;
 
 namespace Mining_App_Core
 {
-	//This class contains a title label, a label to display the time,
-	//a label to show whether the time is AM or PM, and a scroll bar to change the time.
-	//The times referred to by the elements are synchronized through the Time property,
-	//which updates the necessary private variables when get{} is called on it
+	//This class contains a scroll bar to adjust the Time property, and 3 labels that help display it.
+	//The values between all UI elemnts are synchronized through the Time set{} method.
 	public class TimeScroll
 	{
 		private System.ComponentModel.IContainer components = null;
