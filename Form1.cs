@@ -17,20 +17,18 @@ namespace Mining_App_Core
 	//This class contains all the logic for the main form
 	public partial class Form1 : Form
 	{
+		//Creates path C:\Program Files\Automatic Mining\Preferences.txt
 		static string topLevelDirectory = @"c:\Program Files";
-		static public string operatingDirectory = System.IO.Path.Combine(topLevelDirectory, "Automatic Mining");
+		static string operatingDirectory = System.IO.Path.Combine(topLevelDirectory, "Automatic Mining");
 		static public string preferenceFilePath = System.IO.Path.Combine(operatingDirectory, "Preferences.txt");
-		private int closeMin { get; set; } = 0;
-		List<string> preferences;
-		Task result;
+
 		System.Diagnostics.Process miningProcess = null;
-		int processId = -1;
-		bool savedThisSession = false;
-		bool miningWindowOpen = false;
 		private static System.Timers.Timer aTimer;
+		List<string> preferences;
+		int processId = -1;
+
 		TimeScroll openScroller;
 		TimeScroll closeScroller;
-
 		enum RecommendedAction
 		{
 			Open,
@@ -38,6 +36,9 @@ namespace Mining_App_Core
 			None
 		}
 
+		//control vars
+		bool savedThisSession = false;
+		bool miningWindowOpen = false;
 
 		//
 		//TODO: Add button to start timer instead of auto-start on form load, GUI Output for status of application (i.e. Mining Script Running), Error Handling
@@ -137,14 +138,12 @@ namespace Mining_App_Core
 				processId = miningProcess.Id;
 				miningWindowOpen = !miningProcess.HasExited;
 			}
-			if (savedThisSession)
-			{
-				preferences = FileIO.ReadPreferences();
-			}
 			RecommendedAction action = CheckTime();
 			switch (action)
 			{
 				case RecommendedAction.Open:
+					if (savedThisSession) {
+						preferences = FileIO.ReadPreferences(); }
 					AttemptRunMiningCommand(preferences);
 					break;
 				case RecommendedAction.Close:
