@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,8 +17,10 @@ namespace Mining_App_Core
 	public partial class Form1 : Form
 	{
 		//Creates path C:\Program Files\Automatic Mining\Preferences.txt
+
 		static string topLevelDirectory = @"c:\Program Files";
-		static string operatingDirectory = System.IO.Path.Combine(topLevelDirectory, "Automatic Mining");
+		//static string topLevelDirectory = Application.UserAppDataPath;
+		static public string operatingDirectory = System.IO.Path.Combine(topLevelDirectory, "Automatic Mining");
 		static public string preferenceFilePath = System.IO.Path.Combine(operatingDirectory, "Preferences.txt");
 
 		System.Diagnostics.Process miningProcess = null;
@@ -27,6 +28,7 @@ namespace Mining_App_Core
 		List<string> preferences;
 		int processId = -1;
 
+		DataManager dataManager;
 		TimeScroll openScroller;
 		TimeScroll closeScroller;
 		enum RecommendedAction
@@ -53,7 +55,13 @@ namespace Mining_App_Core
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			System.IO.Directory.CreateDirectory(operatingDirectory);
+			FileIO.CreateDirectory(operatingDirectory);
+			dataManager = new DataManager();
+			if (!FileIO.PrefFileExists())
+			{
+				dataManager.SetupNew();
+			}
+			dataManager.WriteLineToData("command", "mega!");
 			openScroller = new TimeScroll(new Point(62, 480), "Start Time", this);
 			closeScroller = new TimeScroll(new Point(813, 480), "End Time", this);
 			LoadSettings();
@@ -69,8 +77,13 @@ namespace Mining_App_Core
 				{
 					exeTextBox.Text = preferences[0];
 					optionsTextBox.Text = preferences[1];
-					openScroller.Time = Convert.ToInt32(preferences[2]);
-					closeScroller.Time = Convert.ToInt32(preferences[3]);
+					//set properties when ints present on lines 3 & 4
+					if (int.TryParse(preferences[2], out int openNum) && int.TryParse(preferences[3], out int closeNum))
+					{
+						openScroller.Time = openNum;
+						closeScroller.Time = closeNum;
+					}
+					//else { error: bad pref file }
 				}
 			}
 		}
@@ -98,25 +111,22 @@ namespace Mining_App_Core
 			}
 		}
 
-		private void saveTime_Click(object sender, EventArgs e)
+		private void SaveCommand_Click(object sender, EventArgs e)
 		{
 			savedThisSession = true;
 			List<string> preferences = FileIO.ReadPreferences();
 			if (preferences is not null)
 			{
+				if (exeTextBox.Text != null)
+					preferences[0] = exeTextBox.Text;
+				else
+					preferences[0] = "\n";
+				if (optionsTextBox != null)
+					preferences[1] = optionsTextBox.Text;
+				else
+					preferences[1] = "\n";
 				preferences[2] = openScroller.Time.ToString();
 				preferences[3] = closeScroller.Time.ToString();
-				FileIO.WritePreferences(preferences);
-			}
-		}
-
-		private void SaveCommand_Click(object sender, EventArgs e)
-		{
-			List<string> preferences = FileIO.ReadPreferences();
-			if (preferences is not null)
-			{
-				preferences[0] = exeTextBox.Text;
-				preferences[1] = optionsTextBox.Text;
 				FileIO.WritePreferences(preferences);
 			}
 		}

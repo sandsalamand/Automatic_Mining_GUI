@@ -31,10 +31,10 @@
 			this.exeTextBox = new System.Windows.Forms.TextBox();
 			this.optionsTextBox = new System.Windows.Forms.TextBox();
 			this.runButton = new System.Windows.Forms.Button();
-			this.saveButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.SaveCommand = new System.Windows.Forms.Button();
+			this.manualStartBox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// exeTextBox
@@ -55,23 +55,13 @@
 			// 
 			// runButton
 			// 
-			this.runButton.Location = new System.Drawing.Point(636, 480);
+			this.runButton.Location = new System.Drawing.Point(640, 519);
 			this.runButton.Name = "runButton";
 			this.runButton.Size = new System.Drawing.Size(112, 64);
 			this.runButton.TabIndex = 2;
 			this.runButton.Text = "Run";
 			this.runButton.UseVisualStyleBackColor = true;
 			this.runButton.Click += new System.EventHandler(this.runButton_Click);
-			// 
-			// saveButton
-			// 
-			this.saveButton.Location = new System.Drawing.Point(636, 339);
-			this.saveButton.Name = "saveButton";
-			this.saveButton.Size = new System.Drawing.Size(112, 95);
-			this.saveButton.TabIndex = 3;
-			this.saveButton.Text = "Save Times";
-			this.saveButton.UseVisualStyleBackColor = true;
-			this.saveButton.Click += new System.EventHandler(this.saveTime_Click);
 			// 
 			// label1
 			// 
@@ -93,23 +83,33 @@
 			// 
 			// SaveCommand
 			// 
-			this.SaveCommand.Location = new System.Drawing.Point(619, 98);
+			this.SaveCommand.Location = new System.Drawing.Point(626, 346);
 			this.SaveCommand.Name = "SaveCommand";
-			this.SaveCommand.Size = new System.Drawing.Size(159, 103);
+			this.SaveCommand.Size = new System.Drawing.Size(138, 92);
 			this.SaveCommand.TabIndex = 15;
-			this.SaveCommand.Text = "Save Command";
+			this.SaveCommand.Text = "Save";
 			this.SaveCommand.UseVisualStyleBackColor = true;
 			this.SaveCommand.Click += new System.EventHandler(this.SaveCommand_Click);
+			// 
+			// manualStartBox
+			// 
+			this.manualStartBox.AutoSize = true;
+			this.manualStartBox.Location = new System.Drawing.Point(589, 472);
+			this.manualStartBox.Name = "manualStartBox";
+			this.manualStartBox.Size = new System.Drawing.Size(213, 41);
+			this.manualStartBox.TabIndex = 16;
+			this.manualStartBox.Text = "Start Manually";
+			this.manualStartBox.UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1417, 832);
+			this.Controls.Add(this.manualStartBox);
 			this.Controls.Add(this.SaveCommand);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.saveButton);
 			this.Controls.Add(this.runButton);
 			this.Controls.Add(this.optionsTextBox);
 			this.Controls.Add(this.exeTextBox);
@@ -126,10 +126,10 @@
 		private System.Windows.Forms.TextBox exeTextBox;
 		private System.Windows.Forms.TextBox optionsTextBox;
 		private System.Windows.Forms.Button runButton;
-		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button SaveCommand;
+		private System.Windows.Forms.CheckBox manualStartBox;
 	}
 }
 
